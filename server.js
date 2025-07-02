@@ -215,6 +215,27 @@ app.post("/finishedlist", (req, res) => {
   });
 });
 
+app.post("/addqruser", (req, res) => {
+  const name = req.body.name;
+
+  db.run(
+    `INSERT INTO qrusers (name, password) VALUES (?, ?)`,
+    [name, name + "4"],
+    function (err) {
+      if (err) {
+        // Responde com erro HTTP
+        return res.status(500).json({ error: err.message });
+      }
+
+      // Responde com sucesso e retorna o ID do registro inserido
+      return res.status(201).json({
+        data: { name: name }
+      });
+    }
+  );
+});
+
+
 app.listen(port, () => {
   console.log(`App de exemplo esta rodando na porta ${port}`);
 });
